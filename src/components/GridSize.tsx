@@ -36,7 +36,7 @@ const GridSize = ({isGameOnline, onGridSizeChange, initialSize}: Props) => {
         <HStack>
             <FormControl isDisabled={isGameOnline}>
                 <FormLabel>Width</FormLabel>
-                <NumberInput defaultValue={initialSize[0]} min={3} precision={0} onChange={handleWidthChange}>
+                <NumberInput defaultValue={initialSize[0]} min={3} max={500} precision={0} onChange={handleWidthChange}>
                     <NumberInputField/>
                     <NumberInputStepper>
                         <NumberIncrementStepper/>
@@ -46,7 +46,7 @@ const GridSize = ({isGameOnline, onGridSizeChange, initialSize}: Props) => {
             </FormControl>
             <FormControl isDisabled={isGameOnline}>
                 <FormLabel>Height</FormLabel>
-                <NumberInput defaultValue={initialSize[1]} min={3} precision={0} onChange={handleHeightChange}>
+                <NumberInput defaultValue={initialSize[1]} min={3} max={500} precision={0} onChange={handleHeightChange}>
                     <NumberInputField/>
                     <NumberInputStepper>
                         <NumberIncrementStepper/>

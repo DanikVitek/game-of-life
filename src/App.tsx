@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import './App.css';
 import Scene from "./components/Scene";
-import {VStack} from "@chakra-ui/react";
+import {Box, VStack} from "@chakra-ui/react";
 import GridSize from "./components/GridSize";
 import PlayButton from "./components/PlayButton";
 import Field from "./primitives/Field";
+import ThemeToggle from "./components/ThemeToggle";
 
 function App() {
     const [[gridW, gridH], setDims] = useState([40, 40]);
@@ -19,7 +19,10 @@ function App() {
 
     return (
         <VStack>
-            <Scene field={field} gameIsOnline={gameIsOnlineLambda}/>
+            <ThemeToggle/>
+            <Box borderStyle="solid" borderWidth={1} borderColor="white">
+                <Scene field={field} gameIsOnline={gameIsOnlineLambda}/>
+            </Box>
             <VStack>
                 <GridSize isGameOnline={gameIsOnline} onGridSizeChange={setDims} initialSize={[gridW, gridH]}/>
                 <PlayButton isGameOnline={gameIsOnline} onGameIsOnlineChange={setGameIsOnline}/>
