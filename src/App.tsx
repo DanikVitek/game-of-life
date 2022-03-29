@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import Scene from "./components/Scene";
+import {VStack} from "@chakra-ui/react";
+import GridSize from "./components/GridSize";
+import PlayButton from "./components/PlayButton";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [[gridW, gridH], setDims] = useState([40, 40]);
+    const [gameIsOnline, setGameIsOnline] = useState(false);
+
+    const gameIsOnlineLambda = () => gameIsOnline;
+
+    return (
+        <VStack>
+            <Scene gridW={gridW} gridH={gridH} gameIsOnline={gameIsOnlineLambda}/>
+            <VStack>
+                <GridSize onGridSizeChange={setDims} initialSize={[gridW, gridH]}/>
+                <PlayButton onGameOnlineStateChange={setGameIsOnline}/>
+            </VStack>
+        </VStack>
+    );
 }
 
 export default App;
