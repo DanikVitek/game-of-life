@@ -10,23 +10,31 @@ import {
 import {useEffect, useState} from "react";
 
 type Props = {
+    isGameOnline: boolean,
     onGridSizeChange: (newSize: [number, number]) => void,
     initialSize: [number, number]
 };
 
-const GridSize = ({onGridSizeChange, initialSize}: Props) => {
+const GridSize = ({isGameOnline, onGridSizeChange, initialSize}: Props) => {
     const [width, setWidth] = useState(initialSize[0]);
     const [height, setHeight] = useState(initialSize[1]);
 
-    useEffect(() => onGridSizeChange([width, height]), [width, height]);
+    useEffect(
+        () => onGridSizeChange([width, height]),
+        [width, height]
+    );
 
-    const handleWidthChange = (_: string, valueAsNumber: number) => setWidth(valueAsNumber)
+    const handleWidthChange = (_: string, valueAsNumber: number) => {
+        if (valueAsNumber >= 1) setWidth(valueAsNumber)
+    }
 
-    const handleHeightChange = (_: string, valueAsNumber: number) => setHeight(valueAsNumber)
+    const handleHeightChange = (_: string, valueAsNumber: number) => {
+        if (valueAsNumber >= 1) setHeight(valueAsNumber)
+    }
 
     return (<>
         <HStack>
-            <FormControl>
+            <FormControl isDisabled={isGameOnline}>
                 <FormLabel>Width</FormLabel>
                 <NumberInput defaultValue={initialSize[0]} min={3} precision={0} onChange={handleWidthChange}>
                     <NumberInputField/>
@@ -36,7 +44,7 @@ const GridSize = ({onGridSizeChange, initialSize}: Props) => {
                     </NumberInputStepper>
                 </NumberInput>
             </FormControl>
-            <FormControl>
+            <FormControl isDisabled={isGameOnline}>
                 <FormLabel>Height</FormLabel>
                 <NumberInput defaultValue={initialSize[1]} min={3} precision={0} onChange={handleHeightChange}>
                     <NumberInputField/>

@@ -3,29 +3,25 @@ import p5Types from "p5";
 import Field from "../primitives/Field";
 
 type Props = {
-    gridW: number,
-    gridH: number,
+    field: Field,
     gameIsOnline: () => boolean
 }
 
-const Scene = ({gridW, gridH, gameIsOnline}: Props) => {
-
-    const resolution = 15;
+const Scene = ({field, gameIsOnline}: Props) => {
     let framesPassed = 0;
-
-    let field: Field;
     let generation = 0;
 
     const setup = (p5: p5Types, canvasParentRef: Element) => {
-        p5.createCanvas(gridW * (resolution + 1), gridH * (resolution + 1)).parent(canvasParentRef);
+        p5.createCanvas(40 * 16, 40 * 16).parent(canvasParentRef);
         p5.background(0);
-        field = new Field(gridW, gridH);
     };
 
-    const draw = (p5: p5Types) => {
+    const draw = (p5: p5Types) => { // CAN'T USE setState
         p5.background(0);
+        if (!field) return;
+
         field.show(false, p5);
-        if (++framesPassed === 30) {
+        if (gameIsOnline() && ++framesPassed === 30) {
             field.act(generation);
             framesPassed = 0;
         }

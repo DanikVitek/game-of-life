@@ -7,7 +7,6 @@ export default class Field {
     private readonly _tempMatrix: boolean[][];
 
     constructor(w: number, h: number) {
-        if (w < 3 || h < 3) throw new Error("Field must be at least 3x3");
         this._width = w;
         this._height = h;
         this._matrix = Field.createMatrix(this._width, this._height);
@@ -20,7 +19,6 @@ export default class Field {
     }
 
     set width(value: number) {
-        if (value < 3) throw new Error("Field must be at least 3x3");
         this._width = value;
         this._matrix = Field.createMatrix(this._width, this._height);
     }
@@ -30,7 +28,6 @@ export default class Field {
     }
 
     set height(value: number) {
-        if (value < 3) throw new Error("Field must be at least 3x3");
         this._height = value;
         this._matrix = Field.createMatrix(this._width, this._height);
     }

@@ -1,16 +1,13 @@
 import {Button} from "@chakra-ui/react";
-import {useState} from "react";
 
 type Props = {
-    onGameOnlineStateChange: (newValue: boolean) => void
+    isGameOnline: boolean,
+    onGameIsOnlineChange: (newValue: boolean) => void
 }
 
-const PlayButton = ({onGameOnlineStateChange} : Props) => {
-    const [isGameOnline, setIsGameOnline] = useState(false);
-
+const PlayButton = ({isGameOnline, onGameIsOnlineChange}: Props) => {
     const handleClick = () => {
-        setIsGameOnline(!isGameOnline);
-        onGameOnlineStateChange(isGameOnline);
+        onGameIsOnlineChange(!isGameOnline);
     }
 
     return (
