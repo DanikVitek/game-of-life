@@ -85,26 +85,34 @@ export default class Field {
         });
     }
 
-    show(showGrid: boolean, p5: p5Types) {
+    show(showGrid: boolean, colorMode: "light" | "dark", p5: p5Types) {
+        const color = colorMode === "light" ? 0 : 255;
         if (showGrid) {
             for (let x = 0; x < p5.width; x += p5.width / this.width) {
-                p5.stroke(255);
+                p5.stroke(color);
+                p5.push();
                 p5.line(x + 1, 0, x + 1, p5.height);
+                p5.pop();
             }
             for (let y = 0; y < p5.height; y += p5.height / this.height) {
-                p5.stroke(255);
+                p5.stroke(color);
+                p5.push();
                 p5.line(0, y + 1, p5.width, y + 1);
+                p5.pop();
             }
         }
         for (let i = 0; i < this.width; i++) {
             for (let j = 0; j < this.height; j++) {
                 if (this.matrix[i][j]) {
-                    p5.stroke(127);
                     const w = p5.width / this.width;
                     const h = p5.height / this.height;
                     const x = i * w;
                     const y = j * h;
-                    p5.rect(x, y, w, h);
+                    p5.stroke(color);
+                    p5.fill(color)
+                    p5.push();
+                    p5.rect(x+1, y+1, w-1, h-1);
+                    p5.pop();
                 }
             }
         }

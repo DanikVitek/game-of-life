@@ -1,6 +1,7 @@
 import Sketch from "react-p5";
 import p5Types from "p5";
 import Field from "../primitives/Field";
+import {useColorMode} from "@chakra-ui/react";
 
 type Props = {
     field: Field,
@@ -12,17 +13,18 @@ type Props = {
 export default function Scene({field, gameIsOnline, gameSpeed, showGrid}: Props) {
     let timePassed = 0;
     let prevIJ: [number, number][] = [];
+    const {colorMode} = useColorMode();
 
     const setup = (p5: p5Types, canvasParentRef: Element) => {
         p5.createCanvas(40 * 16, 40 * 16).parent(canvasParentRef);
-        p5.background(0);
+        p5.background(colorMode === "light" ? 255 : 0);
     };
 
     const draw = (p5: p5Types) => { // CAN'T USE setState
-        p5.background(0);
+        p5.background(colorMode === "light" ? 255 : 0);
         if (!field) return;
 
-        field.show(showGrid, p5);
+        field.show(showGrid, colorMode, p5);
         timePassed += p5.deltaTime / 1000;
         if (gameIsOnline && timePassed >= gameSpeed) {
             field.act();
@@ -48,8 +50,9 @@ export default function Scene({field, gameIsOnline, gameSpeed, showGrid}: Props)
         }
     };
 
-    return <Sketch setup={setup} draw={draw}
-                   touchStarted={putTouch} touchMoved={putTouch}
-                   mouseReleased={() => prevIJ = []}
+    return <Sketch
+        setup={setup} draw={draw}
+        touchStarted={putTouch} touchMoved={putTouch}
+        mouseReleased={() => prevIJ = []}
     />;
 }

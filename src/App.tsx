@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Scene from "./components/Scene";
-import {Box, HStack, VStack} from "@chakra-ui/react";
+import {Box, HStack, useColorMode, VStack} from "@chakra-ui/react";
 import GridInput from "./components/GridInput";
 import GameSpeedSlider from "./components/GameSpeedSlider";
 import PlayButton from "./components/PlayButton";
@@ -15,6 +15,8 @@ function App() {
     const [showGrid, setShowGrid] = useState(false);
     const [field, setField] = useState(new Field(gridW, gridH));
 
+    const {colorMode} = useColorMode();
+
     useEffect(() => {
         if (!gameIsOnline) setField(new Field(gridW, gridH));
     }, [gridW, gridH]);
@@ -22,7 +24,7 @@ function App() {
     return (
         <VStack>
             <ThemeToggle alignSelf="flex-end" marginTop={10} marginRight={10} position="absolute"/>
-            <Box borderStyle="solid" borderWidth={1} borderColor="white">
+            <Box borderStyle="solid" borderWidth={1} borderColor={colorMode === "light" ? "black" : "white"}>
                 <Scene field={field} gameSpeed={gameSpeed} gameIsOnline={gameIsOnline} showGrid={showGrid}/>
             </Box>
             <VStack>
