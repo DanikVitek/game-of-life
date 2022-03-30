@@ -4,12 +4,14 @@ import Field from "../primitives/Field";
 
 type Props = {
     field: Field,
-    gameIsOnline: () => boolean
+    gameSpeed: number,
+    gameIsOnline: boolean,
+    showGrid: boolean
 }
 
-const Scene = ({field, gameIsOnline}: Props) => {
-    let framesPassed = 0;
-    let generation = 0;
+export default function Scene({field, gameIsOnline, gameSpeed, showGrid}: Props) {
+    let timePassed = 0;
+    let prevIJ: [number, number][] = [];
 
     const setup = (p5: p5Types, canvasParentRef: Element) => {
         p5.createCanvas(40 * 16, 40 * 16).parent(canvasParentRef);
@@ -20,14 +22,34 @@ const Scene = ({field, gameIsOnline}: Props) => {
         p5.background(0);
         if (!field) return;
 
-        field.show(false, p5);
-        if (gameIsOnline() && ++framesPassed === 30) {
-            field.act(generation);
-            framesPassed = 0;
+        field.show(showGrid, p5);
+        timePassed += p5.deltaTime / 1000;
+        if (gameIsOnline && timePassed >= gameSpeed) {
+            field.act();
+            timePassed = 0;
+        }
+    };
+
+    const putCell = (x: number, y: number, p5: p5Types) => {
+        const i = Math.floor(x / (p5.width / field.width));
+        const j = Math.floor(y / (p5.width / field.height));
+        if (!prevIJ.some((value) => value[0] === i && value[1] === j)) {
+            field.putCell(i, j);
+            prevIJ.push([i, j]);
         }
     }
 
-    return <Sketch setup={setup} draw={draw}/>;
-};
+    const putTouch = (p5: p5Types) => {
+        if (p5.mouseIsPressed) putCell(p5.mouseX, p5.mouseY, p5);
+        else for (const touch of p5.touches) {
+            // @ts-ignore
+            const {x, y} = touch;
+            putCell(x, y, p5);
+        }
+    };
 
-export default Scene;
+    return <Sketch setup={setup} draw={draw}
+                   touchStarted={putTouch} touchMoved={putTouch}
+                   mouseReleased={() => prevIJ = []}
+    />;
+}

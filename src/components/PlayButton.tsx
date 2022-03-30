@@ -5,14 +5,8 @@ type Props = {
     onGameIsOnlineChange: (newValue: boolean) => void
 }
 
-const PlayButton = ({isGameOnline, onGameIsOnlineChange}: Props) => {
-    const handleClick = () => {
-        onGameIsOnlineChange(!isGameOnline);
-    }
+export default function PlayButton({isGameOnline, onGameIsOnlineChange}: Props) {
+    const handleClick = () => onGameIsOnlineChange(!isGameOnline)
 
-    return (
-        <Button onClick={handleClick}>{isGameOnline ? "Stop" : "Play"}</Button>
-    );
-};
-
-export default PlayButton;
+    return <Button onClick={handleClick}>{isGameOnline ? "Stop" : "Play"}</Button>;
+}

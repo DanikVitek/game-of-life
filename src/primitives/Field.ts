@@ -54,14 +54,6 @@ export default class Field {
         const ip1 = i + 1 < this.width ? i + 1 : 0;
         const jm1 = j - 1;
         const jp1 = j + 1 < this.height ? j + 1 : 0;
-        // console.log({
-        //     i: i,
-        //     j: j,
-        //     "i-1": im1,
-        //     "i+1": ip1,
-        //     "j-1": jm1,
-        //     "j+1": jp1
-        // });
 
         let sum: number = this._matrix.at(im1)!.at(jm1)! ? 1 : 0;
         sum += this._matrix.at(i)!.at(jm1)! ? 1 : 0;
@@ -74,17 +66,14 @@ export default class Field {
         return sum;
     }
 
-    act(generation: number) {
-        // console.log(`generation: ${generation}`);
-        // console.table(this._matrix);
-
+    act() {
         for (let i = 0; i < this.width; i++) {
             for (let j = 0; j < this.height; j++) {
                 const thisAliveNeighbours = this.aliveNeighbours(i, j);
                 if (!this._matrix[i][j] && thisAliveNeighbours === 3)
                     this._tempMatrix[i][j] = true;
-                else if (this._matrix[i][j])
-                    this._tempMatrix[i][j] = thisAliveNeighbours === 2 || thisAliveNeighbours === 3;
+                else if (this._matrix[i][j] && (thisAliveNeighbours < 2 || thisAliveNeighbours > 3))
+                    this._tempMatrix[i][j] = false;
                 else this._tempMatrix[i][j] = this._matrix[i][j];
             }
         }
@@ -119,5 +108,20 @@ export default class Field {
                 }
             }
         }
+    }
+
+    clear() {
+        for (let i = 0; i < this._width; i++) {
+            for (let j = 0; j < this._height; j++) {
+                this._matrix[i][j] = false;
+                this._tempMatrix[i][j] = false;
+            }
+        }
+        console.log("Cleared");
+    }
+
+    putCell(i: number, j: number) {
+        if (i < 0 || i >= this._width || j < 0 || j >= this._height) return;
+        this._matrix[i][j] = !this._matrix[i][j];
     }
 }

@@ -1,12 +1,11 @@
 import {Button, useColorMode} from "@chakra-ui/react";
+import {CSSProperties} from "react";
 
-export default function ThemeToggle() {
+export default function ThemeToggle(style?: CSSProperties) {
     const {colorMode, toggleColorMode} = useColorMode();
     return (
-        <header>
-            <Button onClick={toggleColorMode}>
-                {colorMode === "light" ? "Light" : "Dark"}
-            </Button>
-        </header>
+        <Button onClick={toggleColorMode} style={style}>
+            {colorMode === "light" ? "Light" : "Dark"}
+        </Button>
     );
 }

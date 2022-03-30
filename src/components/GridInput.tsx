@@ -1,21 +1,24 @@
 import {
     FormControl,
-    FormLabel, HStack,
+    FormLabel,
+    HStack,
     NumberDecrementStepper,
     NumberIncrementStepper,
     NumberInput,
     NumberInputField,
-    NumberInputStepper
+    NumberInputStepper, Switch
 } from "@chakra-ui/react";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 type Props = {
     isGameOnline: boolean,
     onGridSizeChange: (newSize: [number, number]) => void,
     initialSize: [number, number]
+    showGrid: boolean,
+    onShowGridChange: (showGrid: boolean) => void
 };
 
-const GridSize = ({isGameOnline, onGridSizeChange, initialSize}: Props) => {
+export default function GridInput({isGameOnline, onGridSizeChange, initialSize, showGrid, onShowGridChange}: Props) {
     const [width, setWidth] = useState(initialSize[0]);
     const [height, setHeight] = useState(initialSize[1]);
 
@@ -31,6 +34,8 @@ const GridSize = ({isGameOnline, onGridSizeChange, initialSize}: Props) => {
     const handleHeightChange = (_: string, valueAsNumber: number) => {
         if (valueAsNumber >= 1) setHeight(valueAsNumber)
     }
+
+    const handleSwitchChange = (e: React.ChangeEvent<HTMLInputElement>) => onShowGridChange(e.target.checked);
 
     return (<>
         <HStack>
@@ -54,8 +59,10 @@ const GridSize = ({isGameOnline, onGridSizeChange, initialSize}: Props) => {
                     </NumberInputStepper>
                 </NumberInput>
             </FormControl>
+            <FormControl>
+                <FormLabel>Show grid</FormLabel>
+                <Switch defaultChecked={showGrid} onChange={handleSwitchChange}/>
+            </FormControl>
         </HStack>
     </>);
-};
-
-export default GridSize;
+}
